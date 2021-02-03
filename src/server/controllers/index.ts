@@ -5,7 +5,7 @@ import { logger } from '../util'
 
 export const get: RequestHandler = (req, res) => {
   res.sendFile(path.join(process.cwd(), '.build', 'client', 'index.html'), (err) => {
-    if (err) {
+    if (err === undefined) {
       logger.error(err)
     }
   })

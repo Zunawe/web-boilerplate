@@ -8,20 +8,30 @@ import indexRouter from './routes/index'
 
 logger.info('Starting server')
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT ?? '8000'
 const app = express()
 
 // Hot module replacement setup
 if (process.env.NODE_ENV === 'development') {
-  const webpack = require('webpack')
-  const webpackConfig = require(path.join(process.cwd(), 'webpack.development.config'))
+  import('webpack').then((webpack) => {
+    import(path.join(process.cwd(), 'webpack.development.config')).then((webpackConfig) => {
+      const compiler = webpack.default(webpackConfig.default)
 
-  const compiler = webpack(webpackConfig)
-
-  app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath: webpackConfig.output.publicPath
-  }))
-  app.use(require('webpack-hot-middleware')(compiler))
+      import('webpack-dev-middleware')
+        .then((webpackDevMiddleware) => {
+          app.use(webpackDevMiddleware.default(compiler, {
+            publicPath: webpackConfig.output.publicPath
+          }))
+        })
+        .then(async () => await import('webpack-hot-middleware'))
+        .then((webpackHotMiddleware) => {
+          app.use(webpackHotMiddleware.default(compiler))
+        })
+        .catch(() => {})
+    })
+      .catch(() => {})
+  })
+    .catch(() => {})
 }
 
 // Middlewares

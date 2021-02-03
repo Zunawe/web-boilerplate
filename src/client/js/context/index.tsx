@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { FC, ReactNode } from 'react'
 
 // Import context providers
 
-type PropTypes = {
-  children: any
+interface ContextProviderProps {
+  children: ReactNode
 }
 
-const ContextProvider = ({ children }: PropTypes) => {
+const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
   // Render context providers nested
   return (
     <>

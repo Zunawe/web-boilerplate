@@ -1,7 +1,6 @@
 {
-	"extends": "./tsconfig.server.development",
-	"compilerOptions": {
-    "sourceMap": false,
+  "extends": "./tsconfig.server.development",
+  "compilerOptions": {
     "removeComments": true
-	}
+  }
 }
