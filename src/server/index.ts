@@ -1,9 +1,10 @@
-const path = require('path')
-const express = require('express')
+import path from 'path'
+import express from 'express'
+import helmet from 'helmet'
 
-const { httpLogger, errorLogger } = require('./middleware')
-const { logger } = require('./util')
-const indexRouter = require('./routes/index')
+import { httpLogger, errorLogger } from './middleware'
+import { logger } from './util'
+import indexRouter from './routes/index'
 
 logger.info('Starting server')
 
@@ -13,7 +14,7 @@ const app = express()
 // Hot module replacement setup
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack')
-  const webpackConfig = require('../webpack.development.config')
+  const webpackConfig = require(path.join(process.cwd(), 'webpack.development.config'))
 
   const compiler = webpack(webpackConfig)
 
@@ -24,8 +25,12 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Middlewares
+if (process.env.NODE_ENV === 'production') {
+  app.use(helmet())
+}
+
 app.use(express.json())
-app.use(express.static(path.join(__dirname, '..', '.build')))
+app.use(express.static(path.join(process.cwd(), '.build', 'client')))
 
 app.use(httpLogger)
 

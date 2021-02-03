@@ -1,5 +1,5 @@
 /* global describe, it, expect */
-import { logger } from '../../../server/util'
+import { logger } from '../../../src/server/util'
 
 describe('logger', () => {
   it('should create a valid logger', () => {

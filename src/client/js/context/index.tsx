@@ -2,7 +2,11 @@ import React from 'react'
 
 // Import context providers
 
-const ContextProvider = ({ children }) => {
+type PropTypes = {
+  children: any
+}
+
+const ContextProvider = ({ children }: PropTypes) => {
   // Render context providers nested
   return (
     <>

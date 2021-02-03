@@ -3,10 +3,10 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', './client/js/index.js', './client/css/app.less'],
+  entry: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', './src/client/js/index.tsx', './src/client/css/app.less'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '.build'),
+    path: path.resolve(__dirname, '.build', 'client'),
     publicPath: '/'
   },
   mode: 'development',
@@ -17,11 +17,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/i,
+        test: /\.tsx?$/i,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
+        use: [
+          {
+            loader: 'babel-loader'
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.client.development.json'
+            }
+          }
+        ]
       },
       {
         test: /\.(jpg|bmp|png)$/i,
@@ -49,7 +57,10 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
-      template: 'client/public/index.html'
+      template: 'src/client/public/index.html'
     })
-  ]
+  ],
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+  }
 }
