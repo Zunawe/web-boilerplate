@@ -14,18 +14,22 @@ const init = async (): Promise<void> => {
 
   // Hot module replacement setup
   if (process.env.NODE_ENV === 'development') {
-    const webpack = (await import('webpack')).default
-    const webpackConfig = (await import(path.join(process.cwd(), 'webpack.dev'))).default
+    try {
+      const webpack = (await import('webpack')).default
+      const webpackConfig = (await import(path.join(process.cwd(), 'webpack.dev'))).default
 
-    const compiler = webpack(webpackConfig)
+      const compiler = webpack(webpackConfig)
 
-    const webpackDevMiddleware = (await import('webpack-dev-middleware')).default
-    app.use(webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath
-    }))
+      const webpackDevMiddleware = (await import('webpack-dev-middleware')).default
+      app.use(webpackDevMiddleware(compiler, {
+        publicPath: webpackConfig.output.publicPath
+      }))
 
-    const webpackHotMiddleware = (await import('webpack-hot-middleware')).default
-    app.use(webpackHotMiddleware(compiler))
+      const webpackHotMiddleware = (await import('webpack-hot-middleware')).default
+      app.use(webpackHotMiddleware(compiler))
+    } catch (error: any) {
+      logger.error('Couldn\'t load webpack hot module replacement. Did you mean to run in production mode?')
+    }
   }
 
   // Middlewares
