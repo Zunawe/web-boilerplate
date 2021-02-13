@@ -62,9 +62,9 @@
     "lint:client": "ts-standard -p client/tsconfig.json \"client/js/**/*.tsx\"",
     "lint:server": "ts-standard -p tsconfig.json \"server/**/*.ts\"",
     "build": "npm run build:client && npm run build:server",
+    "build:dist": "node scripts/build-dist.js",
     "build:client": "webpack --config webpack.prod.js",
-    "build:server": "tsc",
-    "build:dist": "node scripts/build-dist.js"
+    "build:server": "tsc"
   },
   "author": "",
   "license": "ISC",
