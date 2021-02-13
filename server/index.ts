@@ -38,7 +38,7 @@ const init = async (): Promise<void> => {
   }
 
   app.use(express.json())
-  app.use(express.static(path.join(process.cwd(), '.build', 'client')))
+  app.use(express.static(path.join(process.cwd(), 'dist', 'client')))
 
   app.use(httpLogger)
 

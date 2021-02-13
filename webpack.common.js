@@ -5,7 +5,7 @@ module.exports = {
   entry: ['./client/js/index.tsx', './client/css/app.less'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '.build', 'client'),
+    path: path.resolve(__dirname, 'dist', 'client'),
     publicPath: '/'
   },
   module: {
