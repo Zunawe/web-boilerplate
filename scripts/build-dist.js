@@ -19,7 +19,7 @@ const cp = (src, dest) => {
 (async () => {
   try {
     console.log('Building app…')
-    execSync('npm run build')
+    execSync('npm run build', { stdio: 'ignore' })
 
     await fs.promises.rm('tmp', { recursive: true, force: true })
     fs.mkdirSync('tmp')
@@ -37,7 +37,7 @@ const cp = (src, dest) => {
       // Uninstalls all dev dependencies, which removes them from package-lock.json
       // npm uninstall has the side effect of installing remaining packages if there is no node_modules
       console.log('Installing dependencies…')
-      execSync(`npm r ${Object.keys(package.devDependencies).join(' ')}`)
+      execSync(`npm r ${Object.keys(package.devDependencies).join(' ')}`, { stdio: 'ignore' })
     })
 
     console.log('Creating new package.json…')
@@ -49,7 +49,7 @@ const cp = (src, dest) => {
       },
       devDependencies: {}
     }))))
-    execSync(`npm i`) // Formats package.json
+    execSync(`npm i`, { stdio: 'ignore' }) // Formats package.json
 
     console.log('Creating zip archive…')
     const zip = archiver('zip', {
