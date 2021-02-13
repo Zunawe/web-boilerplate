@@ -105,15 +105,15 @@ Running the app
 - `start` - Starts the server using `ts-node`. If you're using this, you should have `NODE_ENV` set to `development` so that the webpack dev middleware can compile the client code into memory. When running this command, all code should run from source (or with source maps), so it is not necessary to build the app before running this.
 
 Tests
-- `test` - Run's both client and server tests
+- `test` - Runs both client and server tests
 - `test:client`
 - `test:server`
 
 Linting
-- `lint` - Find linting errors server and client code
+- `lint` - Find linting errors in server and client code
 - `lint:fix` - Find linting errors and also try to fix them
-- `lint:client` - Find linting errors on client code (try `npm run lint:client -- --fix` to fix only client errors)
-- `lint:server` - Find linting errors on server code (try `npm run lint:server -- --fix` to fix only server errors)
+- `lint:client` - Find linting errors in client code (try `npm run lint:client -- --fix` to fix only client errors)
+- `lint:server` - Find linting errors in server code (try `npm run lint:server -- --fix` to fix only server errors)
 
 Building
 - `build` - Builds client and server code into the `dist/` directory
