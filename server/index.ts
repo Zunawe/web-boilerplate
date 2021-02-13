@@ -12,7 +12,14 @@ const init = async (): Promise<void> => {
   const PORT = process.env.PORT ?? '8000'
   const app = express()
 
-  // Hot module replacement setup
+  // Middlewares
+  if (process.env.NODE_ENV === 'production') {
+    app.use(helmet())
+  }
+
+  app.use(httpLogger)
+
+  // Hot module replacement
   if (process.env.NODE_ENV === 'development') {
     try {
       const webpack = (await import('webpack')).default
@@ -32,16 +39,10 @@ const init = async (): Promise<void> => {
     }
   }
 
-  // Middlewares
-  if (process.env.NODE_ENV === 'production') {
-    app.use(helmet())
-  }
-
   app.use(express.json())
   app.use(express.static(path.join(process.cwd(), 'dist', 'client')))
 
-  app.use(httpLogger)
-
+  // Routes
   app.use('/', routes.root)
 
   app.use(errorLogger)
