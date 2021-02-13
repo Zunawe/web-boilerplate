@@ -2,7 +2,7 @@
   "name": "",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
@@ -45,16 +45,18 @@
   "scripts": {
     "setup": "npm ci && npm run build",
     "setup:dev": "npm i && npx husky install",
-    "clean": "rm -rf node_modules .build logs",
+    "clean": "rm -rf .build",
+    "clean:all": "rm -rf .build node_modules",
     "start": "node .build",
-    "start:dev": "ts-node --project tsconfig.server.development.json .",
+    "start:dev": "ts-node .",
+    "dev": "npm run start:dev",
     "test": "jest",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "webpack --config webpack.production.config.js",
-    "build:server": "tsc --project tsconfig.server.production.json",
+    "build:client": "webpack --config webpack.prod.js",
+    "build:server": "tsc",
     "lint": "npm run lint:server && npm run lint:client",
-    "lint:server": "ts-standard --project tsconfig.server.development.json --fix \"src/server/**/*.ts\"",
-    "lint:client": "ts-standard --project tsconfig.client.development.json --fix \"src/client/js/**/*.tsx\""
+    "lint:server": "ts-standard --fix \"server/**/*.ts\"",
+    "lint:client": "ts-standard -p client/tsconfig.json --fix \"client/js/**/*.tsx\""
   },
   "author": "",
   "license": "ISC"

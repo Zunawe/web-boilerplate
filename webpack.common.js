@@ -2,13 +2,12 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: ['./src/client/js/index.tsx', './src/client/css/app.less'],
+  entry: ['./client/js/index.tsx', './client/css/app.less'],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, '.build', 'client'),
     publicPath: '/'
   },
-  mode: 'production',
   module: {
     rules: [
       {
@@ -21,7 +20,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'tsconfig.client.production.json'
+              configFile: 'client/tsconfig.json'
             }
           }
         ]
@@ -50,7 +49,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/client/public/index.html'
+      template: 'client/public/index.html'
     })
   ],
   resolve: {
