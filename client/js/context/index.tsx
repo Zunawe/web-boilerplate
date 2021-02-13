@@ -6,7 +6,7 @@ interface ContextProviderProps {
   children: ReactNode
 }
 
-const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
+export const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
   // Render context providers nested
   return (
     <>
@@ -14,5 +14,3 @@ const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
     </>
   )
 }
-
-export default ContextProvider

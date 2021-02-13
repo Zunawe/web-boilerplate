@@ -4,7 +4,7 @@ import helmet from 'helmet'
 
 import { httpLogger, errorLogger } from './middleware'
 import { logger } from './util'
-import indexRouter from './routes/index'
+import * as routes from './routes'
 
 const init = async (): Promise<void> => {
   logger.info('Starting server')
@@ -38,7 +38,7 @@ const init = async (): Promise<void> => {
 
   app.use(httpLogger)
 
-  app.use('/', indexRouter)
+  app.use('/', routes.root)
 
   app.use(errorLogger)
 

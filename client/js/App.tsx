@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 
-const App: FC = () => {
+import { Button } from './components'
+
+export const App: FC = () => {
   return (
-    <div />
+    <Button>Click Me</Button>
   )
 }
-
-export default App
