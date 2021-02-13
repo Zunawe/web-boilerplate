@@ -54,7 +54,6 @@
     "clean": "rm -rf dist",
     "clean:all": "rm -rf dist node_modules .husky/_",
     "start": "ts-node .",
-    "dev": "npm run start:dev",
     "test": "npm run test:client && npm run test:server",
     "test:client": "jest -c test/client/jest.config.js",
     "test:server": "jest -c test/server/jest.config.js",
