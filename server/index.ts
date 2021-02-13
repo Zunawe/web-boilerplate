@@ -29,11 +29,15 @@ const init = async (): Promise<void> => {
 
       const webpackDevMiddleware = (await import('webpack-dev-middleware')).default
       app.use(webpackDevMiddleware(compiler, {
-        publicPath: webpackConfig.output.publicPath
+        publicPath: webpackConfig.output.publicPath,
+        stats: 'errors-only'
       }))
 
       const webpackHotMiddleware = (await import('webpack-hot-middleware')).default
-      app.use(webpackHotMiddleware(compiler))
+      app.use(webpackHotMiddleware(compiler, {
+        log: false,
+        path: '/__webpack_hmr'
+      }))
     } catch (error: any) {
       logger.error('Couldn\'t load webpack hot module replacement. Did you mean to run in production mode?')
     }

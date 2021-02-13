@@ -10,3 +10,6 @@ ReactDOM.render(
   </ContextProvider>,
   document.getElementById('root')
 )
+
+// Webpack hot module replacement
+module.hot?.accept()
