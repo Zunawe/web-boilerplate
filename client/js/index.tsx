@@ -1,3 +1,7 @@
+/* eslint-disable import/first */
+// Webpack hot module replacement
+module.hot?.accept()
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -10,6 +14,3 @@ ReactDOM.render(
   </ContextProvider>,
   document.getElementById('root')
 )
-
-// Webpack hot module replacement
-module.hot?.accept()
