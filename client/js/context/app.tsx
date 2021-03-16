@@ -1,5 +1,6 @@
-import React, { FC, createContext, useReducer, useCallback } from 'react'
+import React, { FC, createContext, useReducer } from 'react'
 
+import { useThunkableDispatch } from '../hooks'
 import { reducer } from '../reducers/app'
 
 const initialState: AppState = {
@@ -10,14 +11,7 @@ export const AppContext = createContext<[AppState, Dispatch]>([initialState, () 
 
 export const AppContextProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-
-  const combinedDispatch = useCallback((action: Action | Thunk) => {
-    if (typeof action === 'function') {
-      action(combinedDispatch, () => state)
-    } else {
-      dispatch(action)
-    }
-  }, [dispatch])
+  const combinedDispatch = useThunkableDispatch(state, dispatch)
 
   return (
     <AppContext.Provider value={[state, combinedDispatch]}>
