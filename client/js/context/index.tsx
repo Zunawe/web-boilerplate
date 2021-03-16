@@ -1,16 +1,15 @@
 import React, { FC, ReactNode } from 'react'
 
-// Import context providers
+import { AppContextProvider } from './app'
 
 interface ContextProviderProps {
   children: ReactNode
 }
 
 export const ContextProvider: FC<ContextProviderProps> = ({ children }) => {
-  // Render context providers nested
   return (
-    <>
+    <AppContextProvider>
       {children}
-    </>
+    </AppContextProvider>
   )
 }
