@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react'
 
-import { setCounter } from './actions/app'
+import { setCounter, slowlyDecrementCounter } from './context/actions/app'
 import { Button } from './components'
 import { AppContext } from './context/app'
 
@@ -9,6 +9,7 @@ export const App: FC = () => {
 
   const handleClick = (): void => {
     dispatch(setCounter(state.counter + 1))
+    dispatch(slowlyDecrementCounter())
   }
 
   return (

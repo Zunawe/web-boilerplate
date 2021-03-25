@@ -1,6 +1,6 @@
 import { SetCounterAction } from '../actions/app'
 
-export const reducer = (state: AppState, action: Action): AppState => {
+export const reducer: Reducer = (state, action) => {
   if (action instanceof SetCounterAction) {
     return {
       ...state,

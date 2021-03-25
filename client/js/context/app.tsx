@@ -1,20 +1,20 @@
-import React, { FC, createContext, useReducer } from 'react'
+import React, { FC, createContext } from 'react'
 
-import { useThunkableDispatch } from '../hooks'
-import { reducer } from '../reducers/app'
+import { useEnhancedReducer } from '../hooks'
+import { thunkMiddleware } from './middlewares'
+import { reducer } from './reducers/app'
 
-const initialState: AppState = {
+const initialState: State = {
   counter: 0
 }
 
-export const AppContext = createContext<[AppState, Dispatch]>([initialState, () => {}])
+export const AppContext = createContext<[State, Dispatch, () => State]>([initialState, () => {}, () => initialState])
 
 export const AppContextProvider: FC = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const combinedDispatch = useThunkableDispatch(state, dispatch)
+  const store = useEnhancedReducer(reducer, initialState, undefined, [thunkMiddleware])
 
   return (
-    <AppContext.Provider value={[state, combinedDispatch]}>
+    <AppContext.Provider value={[store.state, store.dispatch, store.getState]}>
       {children}
     </AppContext.Provider>
   )

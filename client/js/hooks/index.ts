@@ -1,1 +1,1 @@
-export * from './useThunkableDispatch'
+export * from './useEnhancedReducer'

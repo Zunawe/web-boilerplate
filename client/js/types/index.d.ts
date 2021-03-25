@@ -3,11 +3,16 @@ declare abstract class Action {
   constructor (payload?: any)
 }
 
-/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
-declare abstract interface State {}
-declare interface AppState extends State {
+declare interface State {
   counter: number
 }
 
-declare type Thunk = (dispatch: (action: Action | Thunk) => void, getState: () => State) => void
-declare type Dispatch = (action: Action | Thunk) => void
+declare interface Store {
+  state: State
+  dispatch: Dispatch
+  getState: () => State
+}
+
+declare type Reducer = (state: State, action: Action) => State
+declare type Dispatch = ((value: any) => void)
+declare type Middleware = (store: Store) => (next: Dispatch) => Dispatch
