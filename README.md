@@ -9,6 +9,7 @@ Here's a quick list of the big players at work here in vague order of most signi
 - Typescript
 - Express
 - React
+- React context (instead of Redux)
 - Less
 - Jest
 - Webpack
@@ -22,6 +23,12 @@ Everything except configuration files and scripts are written in Typescript. Exp
 
 ## Project Structure
 
+Below is a layout of the directory tree with quick one-liners for the various folders and files included. There is both boilerplate, scaffolding code and example code to be found. As usual, modify and delete at your will, but you may find even some of the example code worth keeping.
+
+In the context folder in the client side code, you'll find an example action which is handled by the example reducer. That reducer is given to an example context provider (`context/app.tsx`). That context is used in `App.tsx` to display a counter, and dispatches the action when a button is clicked (a button which is an example component). There's also an example hook which upgrades the React context api to be able to use middlewares, and an example middleware to handle thunks. And then back in `actions/`, there's an example thunk which is also used within `App.tsx`.
+
+Some of these are more likely to be worth keeping than others. For example, you'll probably end up making or using your own Button component rather than using the barebones one here. And the example actions aren't worth keeping at all. But on the other end, the `useEnhancedReducer` hook, while technically an example, is the only way to use middlewares in React context. And the `thunkMiddleware` example, while not necessary, is an extremely useful middleware. So don't just delete the example code unless you know what it's doing and that it's not usesful for your project. But there's no reason to keep it if it's not relevant.
+
 ```
 /
 ├── .husky/                       Scripts run as git hooks (see Husky docs)
@@ -29,10 +36,15 @@ Everything except configuration files and scripts are written in Typescript. Exp
 ├── client/                       
 │   ├── css/                      All styles go here, not in the components
 │   ├── js/
-│   │   ├── actions/              Actions used to indicate state changes in the app
 │   │   ├── components/           Reusable components
 │   │   ├── context/              Context providers separated by purpose and combined into a master provider
-│   │   ├── reducers/             Reducers to modify context based on actions
+│   │   │   ├── actions/          Actions used to indicate state changes in the app
+│   │   │   │   └── Action.ts     A class definition of an Action which actions should extend (for type safety)
+│   │   │   ├── middlewares/      Dispatch middlewares for handling actions before the reducer
+│   │   │   └── reducers/         Reducers to modify context based on actions
+│   │   ├── hooks/                Any custom React hooks you want to use
+│   │   ├── lib/                  Code not directly related to rendering that must be executed on the client
+│   │   ├── types/                Type definitions for the client
 │   │   ├── App.tsx               The React component rendered to the root
 │   │   └── index.tsx             Attaches context provider to app and renders to DOM
 │   ├── public/                   Public resources
@@ -50,7 +62,8 @@ Everything except configuration files and scripts are written in Typescript. Exp
 │   │   ├── errorLogger.ts        Logs uncaught errors during a request
 │   │   └── httpLogger.ts         Logs incoming requests
 │   ├── routes/                   Routes attach controllers to paths
-│   ├── services/                 Interfaces for dealing with anything external (REST api wrappers, database access, etc...)
+│   ├── services/                 Interfaces for interacting with anything not in this codebase
+│   │                             (REST api wrappers, database access, etc...)
 │   ├── util/                     Pure, reusable functions
 │   │   └── logger.ts             A Winston logger (see docs and/or look at examples in this repo)
 │   └── index.ts                  Creates the server, attaches middleware and routes, and should connect to db
