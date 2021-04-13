@@ -19,7 +19,7 @@ Here's a quick list of the big players at work here in vague order of most signi
 - Husky
 - Winston
 
-Everything except configuration files and scripts are written in Typescript. Express for the server, but no opinions on an api or database. React on the frontend (always use hooks and functional components). State on the frontend managed by React's context hooks. Less for styles. Jest (with typescript support) for tests. Webpack to build the client side code (including Typescript compilation, less compilation, and Babel transpilation). Babel to ensure compatibility. ts-standard as a heavily opinionated linter. Hot module replacement to make development on the frontend easier. Husky to manage git hooks. And a built-in Winston logger already configured for http logging.
+Everything except configuration files and scripts is written in Typescript. I use Express for the server, but there are no opinions on exposing an api (REST, GraphQL, etc...) or using a database or similar (Mongo, Redis, etc...). React on the frontend (always use hooks and functional components). Global state on the frontend is managed by React's context hooks (plus some upgrades). Less for styles. Jest (with typescript support) for tests. Webpack to build the client side code (including Typescript compilation, less compilation, and Babel transpilation). Babel to ensure compatibility. ts-standard as a heavily opinionated linter. Hot module replacement to make development on the frontend easier. Husky to manage git hooks. And a built-in Winston logger already configured for http logging.
 
 ## Project Structure
 
@@ -86,11 +86,13 @@ Some of these are more likely to be worth keeping than others. For example, you'
 
 ## Usage
 
-Copy the repo and run `npm setup` to make sure everything is installed correctly. This entire repository is nothing but a manifestation of my opinions, so feel free to disagree with, tweak, or embrace anything.
+Copy the repo and run `npm setup` to make sure everything is installed correctly. This entire repository is nothing but a manifestation of my opinions, so feel free to disagree with, tweak, or embrace anything. You could even fork it and make your own.
 
-Remember to create a `.env` file with `NODE_ENV` set to `development` so that you get hot module replacement and whatever else. This file shouldn't be committed. You should also go through `package.json` and make sure all the fields are filled and correct.
+Remember to create a `.env` file with `NODE_ENV` set to `development`. Otherwise you'll probably have build issues, or at the very least you won't get things like hot module replacement and debug logging. This file shouldn't be committed. You should also go through `package.json` and make sure all the fields are filled and correct.
 
-Whenever possible, a module should not have a default export. This may sound questionable at first, but this enforces stricter conventions when it comes to importing. In almost every directory you can see that there's an `index.ts` which re-exports the other files in that directory. This is much easier to do if the "primary" export of a file is just exported regularly rather than as a default export. Having these index files makes it easier to import multiple things from a single category. For example, this
+### Import/Export Pattern
+
+This is pure opinion, but might be a good pattern to follow. When you're in a directory that exports an arbitrary number of similar things, you should not use default exports. This may sound questionable at first, but it enforces stricter conventions when it comes to importing. A directory should have an `index.ts` file which re-exports all the other stuff in its directory. Then another file can import the whole group of related functions or objects or whatever and destructure them out of the imported object. For example, this
 ```ts
 import { Button, Checkbox, Card } from '../components'
 import { base64Encode, base64Decode, isUnicorn } from '../util'
@@ -103,6 +105,13 @@ import Card from '../components/Card'
 import base64Encode from '../util/base64Encode'
 import base64Decode from '../util/base64Decode'
 import isUnicorn from '../util/isUnicorn'
+```
+
+Another benefit is that the names of exported objects are enforced. Someone can't accidentally `import Buton from '../components/Button` anymore because `import { Buton } from '../components'` won't work in the first place. And finally, since there are no default exports to have to finagle through an `index.ts`, every `index.ts` just looks like this:
+```ts
+export * from './Button'
+export * from './Checkbox'
+export * from './Card'
 ```
 
 ### Scripts
@@ -134,8 +143,8 @@ Building
 - `build:client` - Runs webpack, which will compile typescript, transpile to es5, and bundle. Also grabs other resources like images or stylesheets. Outputs to `dist/client/`
 - `build:server` - Runs the typescript compiler and outputs to `dist/server` (plus the root `index.ts`)
 
-## Why is [client-side module] a devDependency?
+## Why is [module] a devDependency? It should be a direct dependency since it's used at runtime.
 
-Normally I'd be okay putting client side dependencies in the `dependencies` and making a production server build the client code, but since the server code is Typescript, I think we've tipped over a line. The code written on top of this repo isn't a web app, it's the source code for a web app. That source code needs to be compiled into a distributable, and then that distributable can be run. On the client side, the `bundle.js` that is produced by webpack is akin to a binary executable, and React is already packaged within it. So to list React as a dependency of the _product_ is extraneous. React is like a static library that was added directly into our "executable". Modules like Express or Winston, however, are like dynamically linked libraries that need to be loaded at runtime, and so have to be listed as dependencies.
+Normally I'd be okay putting client side dependencies in the `dependencies` and making a production server build the client code, but since the server code is Typescript, I think we've tipped over a line. The code written using this boilerplate isn't a web app, it's the source code for a web app. That source code needs to be compiled into a distributable, and then that distributable can be run. On the client side, the `bundle.js` that is produced by webpack is akin to a binary executable, and React is already packaged within it. So to list React as a dependency of the _product_ is extraneous. React is like a static library that was added directly into our "executable". Modules like Express or Winston, however, are like dynamically linked libraries that need to be loaded at runtime, and so have to be listed as dependencies.
 
 In short, dependencies are things required at runtime by the compiled product whereas devDependencies are only required to write and test the source code. This repo contains the source code to an executable web application, not a web application itself.
