@@ -44,7 +44,7 @@ const init = async (): Promise<void> => {
   }
 
   app.use(express.json())
-  app.use(express.static(path.join(process.cwd(), 'dist', 'client')))
+  app.use(express.static(path.join(process.cwd(), 'client', 'public')))
 
   // Routes
   app.use('/', routes.root)
