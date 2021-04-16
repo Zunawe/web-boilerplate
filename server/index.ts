@@ -44,7 +44,11 @@ const init = async (): Promise<void> => {
   }
 
   app.use(express.json())
-  app.use(express.static(path.join(process.cwd(), 'client', 'public')))
+  if (process.env.NODE_ENV === 'development') {
+    app.use(express.static(path.join(process.cwd(), 'client', 'public')))
+  } else {
+    app.use(express.static(path.join(process.cwd(), 'dist', 'client')))
+  }
 
   // Routes
   app.use('/', routes.root)
