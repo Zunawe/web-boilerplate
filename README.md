@@ -86,9 +86,9 @@ Some of these are more likely to be worth keeping than others. For example, you'
 
 ## Usage
 
-Copy the repo and run `npm setup` to make sure everything is installed correctly. This entire repository is nothing but a manifestation of my opinions, so feel free to disagree with, tweak, or embrace anything. You could even fork it and make your own.
+Remember to create a `.env` file with `NODE_ENV` set to `development`. Otherwise you'll probably have build issues, or at the very least you won't get things like hot module replacement and debug logging. The `.env` file shouldn't be committed, it should be used for configuration specific to the system running the server. You should also go through `package.json` and make sure all the fields are filled and correct.
 
-Remember to create a `.env` file with `NODE_ENV` set to `development`. Otherwise you'll probably have build issues, or at the very least you won't get things like hot module replacement and debug logging. This file shouldn't be committed. You should also go through `package.json` and make sure all the fields are filled and correct.
+This entire repository is nothing but a manifestation of my opinions, so feel free to disagree with, tweak, or embrace anything. You could even fork it and make your own.
 
 ### Import/Export Pattern
 
@@ -119,7 +119,7 @@ export * from './Card'
 Here's a quick overview of everything under `npm run <script name>`
 
 Managing the repo itself
-- `setup` - Installs dependencies and makes sure Husky is set up
+- `postinstall` - Sets up Husky on `npm install`
 - `clean` - Remove build files
 - `clean:all` - Remove build files, node modules, and Husky scripts
 

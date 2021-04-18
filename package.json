@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "web-boilerplate",
   "version": "1.0.0",
   "description": "",
   "repository": "",
@@ -51,7 +51,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "scripts": {
-    "setup": "npm i && npx husky install",
+    "postinstall": "npx husky install",
     "clean": "rm -rf dist",
     "clean:all": "rm -rf dist node_modules .husky/_",
     "start": "ts-node .",
