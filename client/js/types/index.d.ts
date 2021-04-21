@@ -14,5 +14,5 @@ declare interface Store {
 }
 
 declare type Reducer = (state: State, action: Action) => State
-declare type Dispatch = ((value: any) => void)
+declare type Dispatch = ((...args: any[]) => void)
 declare type Middleware = (store: Store) => (next: Dispatch) => Dispatch
