@@ -25,7 +25,6 @@
     "@types/webpack-dev-middleware": "^5.0.2",
     "@types/webpack-env": "^1.16.3",
     "@types/webpack-hot-middleware": "^2.25.5",
-    "archiver": "^5.2.0",
     "axios": "^0.24.0",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.0",
@@ -36,7 +35,6 @@
     "jest": "^27.3.1",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
-    "ncp": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "style-loader": "^3.3.1",
@@ -64,13 +62,12 @@
     "lint:client": "ts-standard -p client/tsconfig.json \"client/js/**/\"",
     "lint:server": "ts-standard -p tsconfig.json \"server/**/\"",
     "build": "npm run build:client && npm run build:server",
-    "build:dist": "node scripts/build-dist.js",
     "build:client": "webpack --config webpack.prod.js",
     "build:server": "tsc"
   },
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   }
 }

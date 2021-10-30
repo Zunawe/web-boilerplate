@@ -10,6 +10,7 @@ Here's a quick list of the big players at work here in vague order of most signi
 - Express
 - React
 - React context (instead of Redux)
+- Docker
 - Less
 - Jest
 - Webpack
@@ -19,7 +20,7 @@ Here's a quick list of the big players at work here in vague order of most signi
 - Husky
 - Winston
 
-Everything except configuration files and scripts is written in Typescript. I use Express for the server, but there are no opinions on exposing an api (REST, GraphQL, etc...) or using a database or similar (Mongo, Redis, etc...). React on the frontend (always use hooks and functional components). Global state on the frontend is managed by React's context hooks (plus some upgrades). Less for styles. Jest (with typescript support) for tests. Webpack to build the client side code (including Typescript compilation, less compilation, and Babel transpilation). Babel to ensure compatibility. ts-standard as a heavily opinionated linter. Hot module replacement to make development on the frontend easier. Husky to manage git hooks. And a built-in Winston logger already configured for http logging.
+Everything except configuration files and scripts is written in Typescript. I use Express for the server, but there are no opinions on exposing an api (REST, GraphQL, etc...) or using a database or similar (Mongo, Redis, etc...). React on the frontend (always use hooks and functional components). Global state on the frontend is managed by React's context hooks (plus some upgrades). Docker is docker. The files are there, but it's more or less independent of everything else. Less for styles. Jest (with typescript support) for tests. Webpack to build the client side code (including Typescript compilation, less compilation, and Babel transpilation). Babel to ensure compatibility. ts-standard as a heavily opinionated linter. Hot module replacement to make development on the frontend easier. Husky to manage git hooks. And a built-in Winston logger already configured for http logging.
 
 ## Project Structure
 
@@ -52,8 +53,6 @@ Some of these are more likely to be worth keeping than others. For example, you'
 │   └── tsconfig.json             Typescript config for the client side code
 ├── config/                       Configuration files for malleable but permanent data
 ├── scripts/                      Any scripts too complex for package.json
-│   └── build-dist.js             Builds and ejects a release version of this app
-│                                 (try npm run build:dist and give it a look)
 ├── server/                       Stuff that runs on the server
 │   ├── controllers/              Behaviors to be attached to routes
 │   ├── lib/                      Any significant chunks of code or modules required by the server which are
@@ -69,9 +68,11 @@ Some of these are more likely to be worth keeping than others. For example, you'
 │   └── index.ts                  Creates the server, attaches middleware and routes, and should connect to db
 ├── test/                         Tests structured in the same manner as the repo; one file gets one test file
 ├── .babelrc
+├── .dockerignore
 ├── .env                          Environment config (create this yourself from example.env)
 │                                 for NODE_ENV, database url, credentials, etc...
 ├── .gitignore
+├── Dockerfile                    Very barebones for creating docker containers
 ├── index.ts                      Loads the environment config and starts the server. This is
 │                                 where you'd spawn any other necessary processes that are separate from the server.
 ├── package-lock.json
@@ -139,7 +140,6 @@ Linting
 
 Building
 - `build` - Builds client and server code into the `dist/` directory
-- `build:dist` - Creates a built app that doesn't know about build tools or dev dependencies. Just unpack and run `npm start`.
 - `build:client` - Runs webpack, which will compile typescript, transpile to es5, and bundle. Also grabs other resources like images or stylesheets. Outputs to `dist/client/`
 - `build:server` - Runs the typescript compiler and outputs to `dist/server` (plus the root `index.ts`)
 
@@ -147,4 +147,4 @@ Building
 
 Normally I'd be okay putting client side dependencies in the `dependencies` and making a production server build the client code, but since the server code is Typescript, I think we've tipped over a line. The code written using this boilerplate isn't a web app, it's the source code for a web app. That source code needs to be compiled into a distributable, and then that distributable can be run. On the client side, the `bundle.js` that is produced by webpack is akin to a binary executable, and React is already packaged within it. So to list React as a dependency of the _product_ is extraneous. React is like a static library that was added directly into our "executable". Modules like Express or Winston, however, are like dynamically linked libraries that need to be loaded at runtime, and so have to be listed as dependencies.
 
-In short, dependencies are things required at runtime by the compiled product whereas devDependencies are only required to write and test the source code. This repo contains the source code to an executable web application, not a web application itself.
+In short, dependencies are things required at runtime by the compiled product whereas devDependencies are only required to write and test the source code. If after running `npm run build` the package must still be installed to `node_modules` for the app to run, it's a dependency. Otherwise it's a devDependency. This repo contains the source code to an executable web application, not a web application itself.
