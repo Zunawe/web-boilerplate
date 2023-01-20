@@ -3,14 +3,19 @@
 module.hot?.accept()
 
 import React from 'react'
-import ReactDOM from 'react-dom'
+import * as ReactDOM from 'react-dom/client'
 
 import { App } from './App'
 import { ContextProvider } from './context'
 
-ReactDOM.render(
-  <ContextProvider>
-    <App />
-  </ContextProvider>,
-  document.getElementById('root')
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as Element
+)
+
+root.render(
+  <React.StrictMode>
+    <ContextProvider>
+      <App />
+    </ContextProvider>
+  </React.StrictMode>
 )

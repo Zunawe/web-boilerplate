@@ -28,6 +28,8 @@ const init = async (): Promise<void> => {
       const compiler = webpack(webpackConfig)
 
       const webpackDevMiddleware = (await import('webpack-dev-middleware')).default
+      // I haven't yet figured out what's triggering eslint here or how to make it happy
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       app.use(webpackDevMiddleware(compiler, {
         publicPath: webpackConfig.output.publicPath,
         stats: 'errors-only'

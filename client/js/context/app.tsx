@@ -1,4 +1,4 @@
-import React, { FC, createContext } from 'react'
+import React, { FC, ReactNode, createContext } from 'react'
 
 import { useEnhancedReducer } from '../hooks'
 import { thunkMiddleware } from './middlewares'
@@ -8,9 +8,13 @@ const initialState: State = {
   counter: 0
 }
 
+interface AppContextProviderProps {
+  children: ReactNode
+}
+
 export const AppContext = createContext<[State, Dispatch, () => State]>([initialState, () => {}, () => initialState])
 
-export const AppContextProvider: FC = ({ children }) => {
+export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) => {
   const store = useEnhancedReducer(reducer, initialState, undefined, [thunkMiddleware])
 
   return (
