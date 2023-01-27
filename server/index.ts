@@ -32,7 +32,8 @@ const init = async (): Promise<void> => {
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       app.use(webpackDevMiddleware(compiler, {
         publicPath: webpackConfig.output.publicPath,
-        stats: 'errors-only'
+        stats: 'errors-only',
+        writeToDisk: true // Otherwise Express can't find and send index.html
       }))
 
       const webpackHotMiddleware = (await import('webpack-hot-middleware')).default
@@ -46,9 +47,7 @@ const init = async (): Promise<void> => {
   }
 
   app.use(express.json())
-  if (process.env.NODE_ENV !== 'development') {
-    app.use('/', express.static(path.join(process.cwd(), 'dist', 'client')))
-  }
+  app.use('/static', express.static(path.join(process.cwd(), 'dist', 'client')))
 
   // Routes
   app.use('/', routes.root)
