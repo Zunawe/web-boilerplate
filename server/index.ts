@@ -2,25 +2,32 @@ import path from 'path'
 import express from 'express'
 import helmet from 'helmet'
 
+import config from '../config/config.json'
 import { httpLogger, errorLogger } from './middleware'
 import { logger } from './util'
 import * as routes from './routes'
 
 const init = async (): Promise<void> => {
-  logger.info('Starting server')
-
+  const NODE_ENV = process.env.NODE_ENV
   const PORT = process.env.PORT ?? '8000'
+
+  if (NODE_ENV === undefined) {
+    throw new Error('NODE_ENV was not specified, please explicitly set NODE_ENV')
+  }
+
+  logger.info(`Starting server in [${NODE_ENV}] mode`)
+
   const app = express()
 
   // Middlewares
-  if (process.env.NODE_ENV === 'production') {
+  if (NODE_ENV === 'production') {
     app.use(helmet())
   }
 
   app.use(httpLogger)
 
   // Hot module replacement
-  if (process.env.NODE_ENV === 'development') {
+  if (NODE_ENV === 'development') {
     try {
       const webpack = (await import('webpack')).default
       const webpackConfig = (await import(path.join(process.cwd(), 'webpack.dev'))).default
@@ -43,14 +50,17 @@ const init = async (): Promise<void> => {
       }))
     } catch (error: any) {
       logger.error('Couldn\'t load webpack hot module replacement. Did you mean to run in production mode?')
+      logger.error(error.stack)
     }
   }
 
   app.use(express.json())
-  app.use('/static', express.static(path.join(process.cwd(), 'dist', 'client')))
 
   // Routes
-  app.use('/', routes.root)
+  const router = express.Router()
+  router.use('/static', express.static(path.join(process.cwd(), 'dist', 'client')))
+  router.use('/', routes.root)
+  app.use(config.basePath, router)
 
   app.use(errorLogger)
 

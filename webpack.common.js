@@ -1,12 +1,13 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const config = require('./config/config.json')
 
 module.exports = {
   entry: ['./client/js/index.tsx', './client/css/app.less'],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist', 'client'),
-    publicPath: '/static'
+    publicPath: `${config.basePath}/static`
   },
   module: {
     rules: [
