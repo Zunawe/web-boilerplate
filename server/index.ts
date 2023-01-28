@@ -59,7 +59,7 @@ const init = async (): Promise<void> => {
   // Routes
   const router = express.Router()
   router.use('/static', express.static(path.join(process.cwd(), 'dist', 'client')))
-  router.use('/', routes.root)
+  router.use('/*', routes.root)
   app.use(config.basePath, router)
 
   app.use(errorLogger)
