@@ -15,6 +15,7 @@ interface AppContextProviderProps {
 export const AppContext = createContext<[State, Dispatch, () => State]>([initialState, () => {}, () => initialState])
 
 export const AppContextProvider: FC<AppContextProviderProps> = ({ children }) => {
+  // Add middlewares here
   const store = useEnhancedReducer(reducer, initialState, undefined, [thunkMiddleware])
 
   return (
