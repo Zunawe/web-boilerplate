@@ -28,9 +28,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|bmp|png|svg)$/i,
-        use: {
-          loader: 'file-loader'
-        }
+        type: 'asset/resource'
       },
       {
         test: /\.(css|less)$/i,
