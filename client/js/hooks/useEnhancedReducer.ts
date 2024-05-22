@@ -1,5 +1,8 @@
 import { useCallback, useReducer, useRef } from 'react'
 
+import { type State } from '../context/app'
+import { type Dispatch, type Middleware, type Reducer, type Store } from '../context/types'
+
 export const useEnhancedReducer = (reducer: Reducer, initialState: State, initializer?: (arg: State) => State, middlewares?: Middleware[]): Store => {
   // Use the useRef hook and a wrapped reducer to intercept the state changes
   // Every time the reducer is called, we save an extra copy of the store

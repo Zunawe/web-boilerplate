@@ -1,4 +1,5 @@
 import { SetCounterAction } from '../actions/app'
+import { type Reducer } from '../types'
 
 export const reducer: Reducer = (state, action) => {
   if (action instanceof SetCounterAction) {

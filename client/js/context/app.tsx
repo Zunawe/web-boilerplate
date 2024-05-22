@@ -1,8 +1,13 @@
 import React, { FC, ReactNode, createContext } from 'react'
 
 import { useEnhancedReducer } from '../hooks'
+import { type Dispatch } from './types'
 import { thunkMiddleware } from './middlewares'
 import { reducer } from './reducers/app'
+
+export interface State {
+  counter: number
+}
 
 const initialState: State = {
   counter: 0
